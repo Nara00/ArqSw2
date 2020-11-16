@@ -13,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import ar.ucc.edu.ArqSW.Parcial.jira.dto.CommentRequestDto;
-import ar.ucc.edu.ArqSW.Parcial.jira.dto.CommentResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectResponseDto;
-import ar.ucc.edu.ArqSW.Parcial.jira.service.CommentService;
 import ar.ucc.edu.ArqSW.Parcial.jira.service.ProjectService;
 
 @Controller
