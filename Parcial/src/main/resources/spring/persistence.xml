@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+	
+	<persistence-unit name="ar.ucc.edu.Parcial" transaction-type="RESOURCE_LOCAL">
+	
+		<description>
+            Persistence unit for local mysql.
+        </description>
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        
+        <!-- En este Bloque se agregan las clases del modelo que mapeamos -->
+        <class>ar.ucc.edu.ArqSW.Parcial.jira.model.Comment</class>
+        <class>ar.ucc.edu.ArqSW.Parcial.jira.model.Project</class>
+        <class>ar.ucc.edu.ArqSW.Parcial.jira.model.State</class>
+        <class>ar.ucc.edu.ArqSW.Parcial.jira.model.Task</class>
+        <class>ar.ucc.edu.ArqSW.Parcial.jira.model.User</class>
+        
+        <properties>
+        
+       		<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+       		
+       		<!--- CONFIGURACION BASE DA DATOS, USER Y PWD -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/videoclub?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+            <property name="javax.persistence.jdbc.user" value="root" />
+            <property name="javax.persistence.jdbc.password" value="nara" />
+            <!---  -->
+            
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+     
+        </properties>
+	
+	</persistence-unit>
+</persistence>
