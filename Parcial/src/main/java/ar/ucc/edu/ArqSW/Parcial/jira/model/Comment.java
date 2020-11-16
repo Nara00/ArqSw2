@@ -24,6 +24,10 @@ public class Comment extends GenericObject{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="TASK_ID")
 	private Task task;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="USER_ID")
+	private User user;
 
 	public String getDescription() {
 		return description;

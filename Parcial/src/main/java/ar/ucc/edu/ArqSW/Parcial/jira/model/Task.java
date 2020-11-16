@@ -48,7 +48,7 @@ public class Task extends GenericObject {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="STATE_ID")
-	private Project state;
+	private State state;
 	
 	@Enumerated(value = EnumType.ORDINAL)
 	@Column(name = "PRIORITY")
@@ -105,11 +105,11 @@ public class Task extends GenericObject {
 		this.project = project;
 	}
 
-	public Project getState() {
+	public State getState() {
 		return state;
 	}
 
-	public void setState(Project state) {
+	public void setState(State state) {
 		this.state = state;
 	}
 
@@ -128,7 +128,5 @@ public class Task extends GenericObject {
 	public void setComment(Set<Comment> comment) {
 		this.comment = comment;
 	}
-
-
 	
 }

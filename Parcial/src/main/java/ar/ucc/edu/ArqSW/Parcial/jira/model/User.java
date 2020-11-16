@@ -34,11 +34,13 @@ public class User extends GenericObject{
 
 	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
 	private Set<Task> task;
+	
+	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+	private Set<Task> comment;
 
 	@ManyToMany(mappedBy="user", fetch = FetchType.LAZY)
-	private Set<Project> projects;
+	private Set<Project> project;
 
-	
 	public String getName() {
 		return name;
 	}
@@ -71,13 +73,22 @@ public class User extends GenericObject{
 		this.task = task;
 	}
 
-	public Set<Project> getProjects() {
-		return projects;
+	public Set<Task> getComment() {
+		return comment;
 	}
 
-	public void setProjects(Set<Project> projects) {
-		this.projects = projects;
+	public void setComment(Set<Task> comment) {
+		this.comment = comment;
 	}
 
+	public Set<Project> getProject() {
+		return project;
+	}
+
+	public void setProject(Set<Project> project) {
+		this.project = project;
+	}
+
+	
 
 }
