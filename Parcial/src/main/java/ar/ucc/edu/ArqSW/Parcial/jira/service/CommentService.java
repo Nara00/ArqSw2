@@ -18,36 +18,38 @@ import ar.ucc.edu.ArqSW.Parcial.jira.model.Comment;
 @Transactional
 public class CommentService {
 
-@Autowired
+	@Autowired
 	private CommentDao commentDao;
 
-    public CommentResponseDto getCommentById(Long id) {
-    	Comment comment = commentDao.load(id);
-                
-    	CommentResponseDto response = (CommentResponseDto) new ModelDtoConverter().convertToDto(comment, new CommentResponseDto());	
-        return response;
-    }
-	
+	public CommentResponseDto getCommentById(Long id) {
+		Comment comment = commentDao.load(id);
+
+		CommentResponseDto response = (CommentResponseDto) new ModelDtoConverter().convertToDto(comment,
+				new CommentResponseDto());
+		return response;
+	}
+
 	public List<CommentResponseDto> getAllComment() {
 		List<Comment> comments = commentDao.getAll();
-		
+
 		List<CommentResponseDto> response = new ArrayList<CommentResponseDto>();
-		 
+
 		for (Comment comment : comments) {
 			response.add((CommentResponseDto) new ModelDtoConverter().convertToDto(comment, new CommentResponseDto()));
 		}
-		
+
 		return response;
 	}
-	
+
 	public CommentResponseDto insertComment(CommentRequestDto request) {
-		
+
 		Comment comment = (Comment) new ModelDtoConverter().convertToEntity(new Comment(), request);
-		
+
 		commentDao.insert(comment);
-		
-		CommentResponseDto response = (CommentResponseDto) new ModelDtoConverter().convertToDto(comment, new CommentResponseDto());	
-		
+
+		CommentResponseDto response = (CommentResponseDto) new ModelDtoConverter().convertToDto(comment,
+				new CommentResponseDto());
+
 		return response;
 	}
 

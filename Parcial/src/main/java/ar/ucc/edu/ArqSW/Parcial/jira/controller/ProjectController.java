@@ -21,26 +21,23 @@ import ar.ucc.edu.ArqSW.Parcial.jira.service.ProjectService;
 @RequestMapping("/project")
 public class ProjectController {
 
-    	@Autowired
-    private ProjectService projectService;
+	@Autowired
+	private ProjectService projectService;
 
-    @RequestMapping(method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<ProjectResponseDto> getAllProject()
-    {
-        return projectService.getAllProject();
-    }
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<ProjectResponseDto> getAllProject() {
+		return projectService.getAllProject();
+	}
 
-    @RequestMapping(value="/{id}", method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ProjectResponseDto lookupStateById(@PathVariable("id") Long id)
-    {
-        return projectService.getProjectById(id);
-    }
-    
-    @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public @ResponseBody ProjectResponseDto saveProject(@RequestBody ProjectRequestDto request)
-    {
-        return projectService.insertProject(request);
-    }
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ProjectResponseDto lookupStateById(@PathVariable("id") Long id) {
+		return projectService.getProjectById(id);
+	}
+
+	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public @ResponseBody ProjectResponseDto saveProject(@RequestBody ProjectRequestDto request) {
+		return projectService.insertProject(request);
+	}
 
 }

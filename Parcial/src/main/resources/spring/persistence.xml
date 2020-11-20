@@ -13,8 +13,9 @@
         <class>ar.ucc.edu.ArqSW.Parcial.jira.model.Comment</class>
         <class>ar.ucc.edu.ArqSW.Parcial.jira.model.Project</class>
         <class>ar.ucc.edu.ArqSW.Parcial.jira.model.State</class>
-        <class>ar.ucc.edu.ArqSW.Parcial.jira.model.Task</class>
         <class>ar.ucc.edu.ArqSW.Parcial.jira.model.User</class>
+        <class>ar.ucc.edu.ArqSW.Parcial.jira.model.Task</class>
+        
         
         <properties>
         

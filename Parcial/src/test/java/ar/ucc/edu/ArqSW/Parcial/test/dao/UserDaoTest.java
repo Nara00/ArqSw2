@@ -1,4 +1,4 @@
-package ar.edu.ucc.arqSoft.videoClub.test.dao;
+package ar.ucc.edu.ArqSW.Parcial.test.dao;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
@@ -26,7 +26,7 @@ public class UserDaoTest {
 	@Test
 	public void testFindById() {
 		Long uno = (long) 1;
-		logger.info("Test de busqueda de Alquiler por ID");
+		logger.info("Test de busqueda de User por ID");
 		User user = userDao.load((long) 1);
 		
 		Assert.assertEquals(uno, user.getId());
