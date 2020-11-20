@@ -44,6 +44,14 @@ public class Comment extends GenericObject{
 	public void setTask(Task task) {
 		this.task = task;
 	}
-	
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
 }

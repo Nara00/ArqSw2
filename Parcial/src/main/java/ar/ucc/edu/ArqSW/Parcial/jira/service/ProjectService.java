@@ -13,7 +13,6 @@ import ar.ucc.edu.ArqSW.Parcial.jira.dao.ProjectDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Project;
-import ar.ucc.edu.ArqSW.Parcial.jira.model.Task;
 
 @Service
 @Transactional
@@ -43,7 +42,7 @@ public class ProjectService {
 	
 	public ProjectResponseDto insertProject(ProjectRequestDto request) {
 		
-		Project project = (Project) new ModelDtoConverter().convertToEntity(new Task(), request);
+		Project project = (Project) new ModelDtoConverter().convertToEntity(new Project(), request);
 		
 		projectDao.insert(project);
 		

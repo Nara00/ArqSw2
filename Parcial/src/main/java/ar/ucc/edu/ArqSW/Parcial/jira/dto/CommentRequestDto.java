@@ -7,6 +7,7 @@ public class CommentRequestDto implements DtoEntity{
 	private String description;
 	private Long taskid;
 	private Long userid;
+	
 	public String getDescription() {
 		return description;
 	}

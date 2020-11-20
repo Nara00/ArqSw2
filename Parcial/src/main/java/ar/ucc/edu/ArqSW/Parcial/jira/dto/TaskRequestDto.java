@@ -1,6 +1,7 @@
 package ar.ucc.edu.ArqSW.Parcial.jira.dto;
 
 import ar.ucc.edu.ArqSW.Parcial.common.dto.DtoEntity;
+import ar.ucc.edu.ArqSW.Parcial.jira.model.Priority;
 
 public class TaskRequestDto implements DtoEntity{
 
@@ -13,6 +14,8 @@ public class TaskRequestDto implements DtoEntity{
 	private Long projectid;
 	
 	private Long stateid;
+	
+	private Priority priority;
 	
 	//private Set<Comment> comment;
 	
@@ -46,5 +49,11 @@ public class TaskRequestDto implements DtoEntity{
 	public void setProjectid(Long projectid) {
 		this.projectid = projectid;
 	}
-		
+	public Priority getPriority() {
+		return priority;
+	}
+	public void setPriority(Priority priority) {
+		this.priority = priority;
+	}
+			
 }

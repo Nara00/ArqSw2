@@ -34,7 +34,6 @@ public class Task extends GenericObject {
 	@Column(name = "START_DATE")
 	private Date startdate;
 	
-	@NotNull
 	@Column(name = "LAST_UPDATE")
 	private Date last_update;
 	
@@ -42,6 +41,7 @@ public class Task extends GenericObject {
 	@JoinColumn(name="USER_ID")
 	private User user;
 	
+	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="PROJECT_ID")
 	private Project project;

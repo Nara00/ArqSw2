@@ -1,0 +1,14 @@
+Get:
+curl --header "Content-Type: application/json" --request GET http://localhost:8080/Parcial/task
+
+Post:
+User:
+curl --header "Content-Type: application/json" --request POST --data "{\"name\":\"Juan Paco\",\"lastname\":\"De La Mar\",\"email\":\"jppdlm@gmail.com\"}" http://localhost:8080/Parcial/user
+Commet:
+curl --header "Content-Type: application/json" --request POST --data "{\"description\":\"Descripcion2\",\"taskid\":\"1\",\"userid\":\"1\"}" http://localhost:8080/Parcial/comment
+Project:
+curl --header "Content-Type: application/json" --request POST --data "{\"name\":\"Projecto2\",\"description\":\"Descripcion2\"}" http://localhost:8080/Parcial/project
+State:
+curl --header "Content-Type: application/json" --request POST --data "{\"name\":\"Estado 2\"}" http://localhost:8080/Parcial/state
+Task
+curl --header "Content-Type: application/json" --request POST --data "{\"task_name\":\"Nombre Tarea 2\",\"description\":\"Descripcion tarea\",\"userid\":\"1\",\"projectid\":\"1\",\"stateid\":\"1\",\"priority\":\"1\"}" http://localhost:8080/Parcial/task

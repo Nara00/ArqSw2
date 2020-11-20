@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
 
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.CommentDao;
+import ar.ucc.edu.ArqSW.Parcial.jira.dao.TaskDao;
+import ar.ucc.edu.ArqSW.Parcial.jira.dao.UserDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.CommentRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.CommentResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Comment;
@@ -20,6 +22,12 @@ public class CommentService {
 
 	@Autowired
 	private CommentDao commentDao;
+
+	@Autowired
+	private TaskDao taskDao;
+
+	@Autowired
+	private UserDao userDao;
 
 	public CommentResponseDto getCommentById(Long id) {
 		Comment comment = commentDao.load(id);
@@ -43,14 +51,23 @@ public class CommentService {
 
 	public CommentResponseDto insertComment(CommentRequestDto request) {
 
-		Comment comment = (Comment) new ModelDtoConverter().convertToEntity(new Comment(), request);
+		Comment comment = new Comment();
+
+		comment.setDescription(request.getDescription());
+		comment.setTask(taskDao.load(request.getTaskid()));
+		comment.setUser(userDao.load(request.getUserid()));
 
 		commentDao.insert(comment);
 
-		CommentResponseDto response = (CommentResponseDto) new ModelDtoConverter().convertToDto(comment,
-				new CommentResponseDto());
+		CommentResponseDto response = new CommentResponseDto();
+
+		response.setId(comment.getId());
+		response.setDescription(comment.getDescription());
+		response.setTaskid(comment.getTask().getId());
+		response.setUserid(comment.getUser().getId());
 
 		return response;
+
 	}
 
 }
