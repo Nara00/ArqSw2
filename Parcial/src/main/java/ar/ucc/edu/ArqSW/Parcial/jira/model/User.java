@@ -2,6 +2,7 @@ package ar.ucc.edu.ArqSW.Parcial.jira.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +11,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import ar.ucc.edu.ArqSW.Parcial.common.model.GenericObject;
 
@@ -38,8 +43,8 @@ public class User extends GenericObject{
 	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
 	private Set<Task> comment;
 
-	//@ManyToMany(mappedBy="user", fetch = FetchType.LAZY)
-	//private Set<Project> project;
+	@ManyToMany(cascade = CascadeType.ALL)
+	private Set<Project> project;
 
 	public String getName() {
 		return name;
@@ -81,12 +86,12 @@ public class User extends GenericObject{
 		this.comment = comment;
 	}
 
-//	public Set<Project> getProject() {
-//		return project;
-//	}
+	public Set<Project> getProject() {
+		return project;
+	}
 
-//	public void setProject(Set<Project> project) {
-//		this.project = project;
-//	}
+	public void setProject(Set<Project> project) {
+		this.project = project;
+	}
 
 }
