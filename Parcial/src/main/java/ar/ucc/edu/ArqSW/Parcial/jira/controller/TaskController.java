@@ -43,5 +43,17 @@ public class TaskController {
     {
         return taskService.insertTask(request);
     }
+    
+    @RequestMapping(value="/changeStateFromTask/{id}", method=RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody TaskResponseDto changeState(@PathVariable("id") Long id, @RequestBody Long request)
+    {
+        return taskService.changeState(id, request);
+    }
+    
+    @RequestMapping(value="/setUserToTask/{id}", method=RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody TaskResponseDto changeUser(@PathVariable("id") Long id, @RequestBody Long request)
+    {
+        return taskService.changeUser(id, request);
+    }
 
 }

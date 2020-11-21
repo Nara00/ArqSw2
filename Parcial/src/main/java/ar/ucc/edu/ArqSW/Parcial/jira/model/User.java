@@ -12,10 +12,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Where;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import ar.ucc.edu.ArqSW.Parcial.common.model.GenericObject;
 
 @Entity
@@ -43,7 +39,7 @@ public class User extends GenericObject{
 	@OneToMany(mappedBy="user", fetch = FetchType.LAZY)
 	private Set<Task> comment;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy="user")
 	private Set<Project> project;
 
 	public String getName() {

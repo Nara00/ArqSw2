@@ -3,6 +3,7 @@ package ar.ucc.edu.ArqSW.Parcial.jira.model;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,7 +31,7 @@ public class Project extends GenericObject {
 	@OneToMany(mappedBy="project", fetch = FetchType.LAZY)
 	private Set<Task> task;
 	
-	@ManyToMany(mappedBy="project")
+	@ManyToMany(cascade = CascadeType.ALL)
 	private Set<User> user;
 
 	public String getDescription() {
@@ -64,6 +65,12 @@ public class Project extends GenericObject {
 	public void setUser(Set<User> user) {
 		this.user = user;
 	}
+	
+	public void addUser(User user) {
+		this.user.add(user);
+	}
+	
+	
 	
 	
 }

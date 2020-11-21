@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectResponseDto;
+import ar.ucc.edu.ArqSW.Parcial.jira.dto.TaskResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.service.ProjectService;
+import ar.ucc.edu.ArqSW.Parcial.jira.service.UserService;
 
 @Controller
 @RequestMapping("/project")
@@ -23,6 +25,9 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectService projectService;
+
+	@Autowired
+	private UserService userService;
 
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<ProjectResponseDto> getAllProject() {
@@ -38,6 +43,12 @@ public class ProjectController {
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public @ResponseBody ProjectResponseDto saveProject(@RequestBody ProjectRequestDto request) {
 		return projectService.insertProject(request);
+	}
+
+	@RequestMapping(value = "/setUserToProject/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ProjectResponseDto setUser(@PathVariable("id") Long id, @RequestBody Long request) {
+		System.out.println("estamos aquí");
+		return projectService.setUser(id, request);
 	}
 
 }

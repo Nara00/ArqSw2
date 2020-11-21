@@ -10,5 +10,9 @@ Project:
 curl --header "Content-Type: application/json" --request POST --data "{\"name\":\"Projecto2\",\"description\":\"Descripcion2\"}" http://localhost:8080/Parcial/project
 State:
 curl --header "Content-Type: application/json" --request POST --data "{\"name\":\"Estado 2\"}" http://localhost:8080/Parcial/state
-Task
+Task:
 curl --header "Content-Type: application/json" --request POST --data "{\"task_name\":\"Nombre Tarea 2\",\"description\":\"Descripcion tarea\",\"userid\":\"1\",\"projectid\":\"1\",\"stateid\":\"1\",\"priority\":\"1\"}" http://localhost:8080/Parcial/task
+ChangeState:
+curl --header "Content-Type: application/json" --request PUT --data "2" http://localhost:8080/Parcial/task/changeStateFromTask/1
+curl --header "Content-Type: application/json" --request PUT --data "2" http://localhost:8080/Parcial/task/setUserToTask/1
+curl --header "Content-Type: application/json" --request PUT --data "2" http://localhost:8080/Parcial/project/setUserToProject/1

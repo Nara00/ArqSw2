@@ -17,8 +17,6 @@ public class TaskRequestDto implements DtoEntity{
 	
 	private Priority priority;
 	
-	//private Set<Comment> comment;
-	
 	public String getTask_name() {
 		return task_name;
 	}

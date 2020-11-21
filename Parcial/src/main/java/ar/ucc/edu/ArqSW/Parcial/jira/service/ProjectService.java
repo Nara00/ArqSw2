@@ -10,9 +10,12 @@ import org.springframework.stereotype.Service;
 
 import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.ProjectDao;
+import ar.ucc.edu.ArqSW.Parcial.jira.dao.UserDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectResponseDto;
+import ar.ucc.edu.ArqSW.Parcial.jira.dto.TaskResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Project;
+import ar.ucc.edu.ArqSW.Parcial.jira.model.Task;
 
 @Service
 @Transactional
@@ -20,6 +23,9 @@ public class ProjectService {
 	
     @Autowired
 	private ProjectDao projectDao;
+	
+	@Autowired
+	private UserDao userDao;
 
     public ProjectResponseDto getProjectById(Long id) {
     	Project project = projectDao.load(id);
@@ -49,6 +55,43 @@ public class ProjectService {
 		ProjectResponseDto response = (ProjectResponseDto) new ModelDtoConverter().convertToDto(project, new ProjectResponseDto());	
 		
 		return response;
+	}
+	
+//	public TaskResponseDto changeUser(Long id, Long request) {
+//		Task task = taskDao.load(id);
+//
+//		task.setUser(userDao.load(request));
+//		taskDao.update(task);
+//
+//		Task task_after_update = taskDao.load(id);
+//		TaskResponseDto response = new TaskResponseDto();
+//
+//		response.setId(task_after_update.getId());
+//		response.setLast_update(task_after_update.getLast_update());
+//		response.setTask_name(task_after_update.getTask_name());
+//		response.setDescription(task_after_update.getDescription());
+//		response.setPriority(task_after_update.getPriority());
+//		response.setUserid(task_after_update.getUser().getId());
+//		response.setProject_name(task_after_update.getProject().getName());
+//		response.setProjectid(task_after_update.getProject().getId());
+//		response.setState_name(task_after_update.getState().getName());
+//		response.setStateid(task_after_update.getState().getId());
+//		return response;
+//	}
+	
+	public ProjectResponseDto setUser(Long id, Long request)
+	{
+	Project project = projectDao.load(id);
+	project.addUser(userDao.load(request));
+	
+	projectDao.insert(project);
+	
+	Project project_after_update = projectDao.load(id);
+	
+	ProjectResponseDto response = (ProjectResponseDto) new ModelDtoConverter().convertToDto(project_after_update, new ProjectResponseDto());	
+	
+	return response;
+	
 	}
 
 }
