@@ -1,6 +1,5 @@
 package ar.ucc.edu.ArqSW.Parcial.jira.dao;
 
-import java.util.List;
 
 import org.springframework.stereotype.Repository;
 

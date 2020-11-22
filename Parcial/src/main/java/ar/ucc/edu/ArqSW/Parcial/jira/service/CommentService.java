@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.CommentDao;
@@ -36,10 +35,10 @@ public class CommentService {
 			throw new BadRequestException();
 		}
 		Comment comment = commentDao.load(id);
+		
+		CommentResponseDto response = new CommentResponseDto();
 
-		CommentResponseDto response = (CommentResponseDto) new ModelDtoConverter().convertToDto(comment,
-				new CommentResponseDto());
-		return response;
+		return commentResponseGenerator(response, comment);
 	}
 
 	public List<CommentResponseDto> getAllComment() {
@@ -48,7 +47,7 @@ public class CommentService {
 		List<CommentResponseDto> response = new ArrayList<CommentResponseDto>();
 
 		for (Comment comment : comments) {
-			response.add((CommentResponseDto) new ModelDtoConverter().convertToDto(comment, new CommentResponseDto()));
+			response.add(commentResponseGenerator( new CommentResponseDto(),comment));
 		}
 
 		return response;
@@ -66,13 +65,19 @@ public class CommentService {
 
 		CommentResponseDto response = new CommentResponseDto();
 
+		return commentResponseGenerator(response, comment);
+
+	}
+	
+	public CommentResponseDto commentResponseGenerator(CommentResponseDto response, Comment comment)
+	{
 		response.setId(comment.getId());
 		response.setDescription(comment.getDescription());
 		response.setTaskid(comment.getTask().getId());
-		//response.setUserid(comment.getUser().getId());
+		if (comment.getUser() != null)
+			response.setUserid(comment.getUser().getId());
 
 		return response;
-
 	}
 
 }

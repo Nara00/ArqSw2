@@ -18,9 +18,9 @@ import ar.ucc.edu.ArqSW.Parcial.common.dto.GenericExceptionDto;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.ForbiddenException;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.InvalidTransitionException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.TaskRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.TaskResponseDto;
-import ar.ucc.edu.ArqSW.Parcial.jira.dto.UserResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.service.TaskService;
 
 @Controller
@@ -78,6 +78,10 @@ public class TaskController {
 			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
 			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
 		}
+		catch (InvalidTransitionException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("405", "La transicion es invalida");
+			return new ResponseEntity<Object>(exDto, HttpStatus.METHOD_NOT_ALLOWED);
+		}
 	}
 
 	@RequestMapping(value = "/setUserToTask/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -94,6 +98,9 @@ public class TaskController {
 		} catch (BadRequestException e) {
 			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
 			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
+		}catch (InvalidTransitionException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("405", "Esta tarea se encuentra cerrada");
+			return new ResponseEntity<Object>(exDto, HttpStatus.METHOD_NOT_ALLOWED);
 		}
 	}
 }

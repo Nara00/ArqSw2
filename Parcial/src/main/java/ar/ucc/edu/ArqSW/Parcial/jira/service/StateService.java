@@ -11,7 +11,6 @@ import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.StateDao;
-import ar.ucc.edu.ArqSW.Parcial.jira.dto.StateRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.StateResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.State;
 
@@ -55,4 +54,5 @@ public class StateService {
 //		
 //		return response;
 //	}
+	
 }

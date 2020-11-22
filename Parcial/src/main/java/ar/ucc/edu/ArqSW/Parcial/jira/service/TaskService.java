@@ -10,10 +10,10 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.ForbiddenException;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.InvalidTransitionException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.CommentDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.ProjectDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.StateDao;
@@ -22,14 +22,12 @@ import ar.ucc.edu.ArqSW.Parcial.jira.dao.UserDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.CommentResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.TaskRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.TaskResponseDto;
-import ar.ucc.edu.ArqSW.Parcial.jira.dto.UserResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Task;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.User;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Comment;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Project;
-import java.util.stream.Stream;
 
-//Completar todos los response
+
 @Service
 @Transactional
 public class TaskService {
@@ -109,8 +107,12 @@ public class TaskService {
 
 	}
 
-	public TaskResponseDto changeState(Long id, Long request) throws EntityNotFoundException, BadRequestException {
+	public TaskResponseDto changeState(Long id, Long request)
+			throws EntityNotFoundException, BadRequestException, InvalidTransitionException {
 		Task task = taskDao.load(id);
+		if ((task.getState().getId() == 4) || (request == 1)) {
+			throw new InvalidTransitionException();
+		}
 		Comment comment = new Comment();
 		comment.setDescription("Se cambió el estado de la tarea de " + task.getState().getId() + " a " + request
 				+ " / fecha " + Calendar.getInstance().getTime());
@@ -127,8 +129,10 @@ public class TaskService {
 	}
 
 	public TaskResponseDto changeUser(Long id, Long request)
-			throws EntityNotFoundException, ForbiddenException, BadRequestException {
+			throws EntityNotFoundException, ForbiddenException, BadRequestException, InvalidTransitionException {
 		Task task = taskDao.load(id);
+		if (task.getState().getId() == 4)
+			throw new InvalidTransitionException();
 		Comment comment = new Comment();
 		comment.setDescription("Se cambió el usuario asignado de " + task.getUser().getId() + " a " + request
 				+ " /fecha: " + Calendar.getInstance().getTime());
@@ -142,7 +146,7 @@ public class TaskService {
 		task.setState(stateDao.load((long) 2));
 		task.setLast_update(Calendar.getInstance().getTime());
 		taskDao.update(task);
-		
+
 		comment.setTask(task);
 		commentDao.insert(comment);
 		Task task_after_update = taskDao.load(id);
@@ -162,14 +166,8 @@ public class TaskService {
 		response.setProjectid(task.getProject().getId());
 		response.setState_name(task.getState().getName());
 		response.setStateid(task.getState().getId());
-//		try
-//		{
-//			response.setUserid(task.getUser().getId());
-//		}
-//		catch(NullPointerException())
-//		{
-//			
-//		}			
+		if (task.getUser() != null)
+			response.setUserid(task.getUser().getId());
 
 		List<Comment> comments = commentDao.getAllByTaskId(task.getId());
 
@@ -181,7 +179,8 @@ public class TaskService {
 			crdto.setId(comment.getId());
 			crdto.setDescription(comment.getDescription());
 			crdto.setTaskid(comment.getTask().getId());
-			//crdto.setUserid(comment.getUser().getId());
+			if (comment.getUser() != null)
+				crdto.setUserid(comment.getUser().getId());
 			comment_response.add(crdto);
 		}
 		response.setComment(comment_response);

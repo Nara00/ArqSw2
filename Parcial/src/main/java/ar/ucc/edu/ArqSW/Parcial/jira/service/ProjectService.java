@@ -73,28 +73,6 @@ public class ProjectService {
 		return response;
 	}
 	
-//	public TaskResponseDto changeUser(Long id, Long request) {
-//		Task task = taskDao.load(id);
-//
-//		task.setUser(userDao.load(request));
-//		taskDao.update(task);
-//
-//		Task task_after_update = taskDao.load(id);
-//		TaskResponseDto response = new TaskResponseDto();
-//
-//		response.setId(task_after_update.getId());
-//		response.setLast_update(task_after_update.getLast_update());
-//		response.setTask_name(task_after_update.getTask_name());
-//		response.setDescription(task_after_update.getDescription());
-//		response.setPriority(task_after_update.getPriority());
-//		response.setUserid(task_after_update.getUser().getId());
-//		response.setProject_name(task_after_update.getProject().getName());
-//		response.setProjectid(task_after_update.getProject().getId());
-//		response.setState_name(task_after_update.getState().getName());
-//		response.setStateid(task_after_update.getState().getId());
-//		return response;
-//	}
-	
 	public ProjectResponseDto setUser(Long id, Long request) throws EntityNotFoundException, BadRequestException
 	{
 	Project project = projectDao.load(id);

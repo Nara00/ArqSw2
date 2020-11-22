@@ -27,13 +27,4 @@ public class ProjectDaoImp extends GenericDaoImp<Project, Long> implements Proje
         return em.createQuery(criteria).getResultList();
 	}
 	
-//	@Override
-//	public List<User> getAllUserFromAProjectId(Long projectid) {
-//		CriteriaBuilder builder = em.getCriteriaBuilder();
-//        CriteriaQuery<Project> criteria = builder.createQuery(Project.class);
-//        Root<Project> entity = criteria.from(Project.class);
-//        criteria.multiselect(entity.get("user")).where(builder.equal(entity.get("id"), projectid));
-//        return em.createQuery(criteria).getResultList();
-//	}
-	
 }

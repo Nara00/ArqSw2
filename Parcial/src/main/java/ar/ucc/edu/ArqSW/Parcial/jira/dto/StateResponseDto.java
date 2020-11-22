@@ -6,7 +6,6 @@ public class StateResponseDto implements DtoEntity{
 	
 	private Long id;
 	private String name;
-	//private Set<Task> task;
 
 	public String getName() {
 		return name;

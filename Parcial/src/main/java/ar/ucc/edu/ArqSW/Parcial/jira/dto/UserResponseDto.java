@@ -4,9 +4,7 @@ import ar.ucc.edu.ArqSW.Parcial.common.dto.DtoEntity;
 
 public class UserResponseDto implements DtoEntity{
 
-//    private Long taskid;
-//    private Long projectid;
-    
+   
 	private Long id;
 	
 	private String name;

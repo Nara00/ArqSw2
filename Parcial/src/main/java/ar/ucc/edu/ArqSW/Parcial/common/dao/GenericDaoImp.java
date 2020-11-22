@@ -33,11 +33,8 @@ public abstract class GenericDaoImp<E, ID extends Serializable> implements Gener
 
 	public void insert(E entity) throws BadRequestException {
 		try {
-			System.out.println("Antes de persist");
 			em.persist(entity);
-			System.out.println("Desp de persist");
 		} catch (Exception e) {
-			System.out.println("En el Catch :)");
 			throw new BadRequestException();
 		}
 	}

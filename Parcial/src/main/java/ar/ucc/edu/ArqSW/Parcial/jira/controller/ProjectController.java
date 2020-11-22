@@ -47,7 +47,7 @@ public class ProjectController {
 			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+		
 	@RequestMapping(value = "/findByName/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody List<ProjectResponseDto> lookupStateById(@PathVariable("name") String name) {
 		return projectService.getProjectByName(name);

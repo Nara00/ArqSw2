@@ -19,7 +19,6 @@ import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.CommentRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.CommentResponseDto;
-import ar.ucc.edu.ArqSW.Parcial.jira.dto.UserResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.service.CommentService;
 
 @Controller
