@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import ar.ucc.edu.ArqSW.Parcial.common.dto.GenericExceptionDto;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.StateRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.StateResponseDto;
@@ -31,9 +34,18 @@ public class StateController {
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody StateResponseDto lookupStateById(@PathVariable("id") Long id) throws EntityNotFoundException
+    public @ResponseBody ResponseEntity<Object> lookupStateById(@PathVariable("id") Long id) throws EntityNotFoundException
     {
-        return stateService.getStateById(id);
+        try {
+			StateResponseDto dto = stateService.getStateById(id);
+			return new ResponseEntity<Object>(dto, HttpStatus.OK);
+		} catch (EntityNotFoundException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("404", "No se encontró la entidad buscada");
+			return new ResponseEntity<Object>(exDto, HttpStatus.NOT_FOUND);
+		} catch (BadRequestException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "El parámetro id ingresado no es válido");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
+		}
     }
     
 //    @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)

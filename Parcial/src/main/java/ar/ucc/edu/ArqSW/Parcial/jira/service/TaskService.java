@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.ForbiddenException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.CommentDao;
@@ -21,13 +22,14 @@ import ar.ucc.edu.ArqSW.Parcial.jira.dao.UserDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.CommentResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.TaskRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.TaskResponseDto;
+import ar.ucc.edu.ArqSW.Parcial.jira.dto.UserResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Task;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.User;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Comment;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Project;
 import java.util.stream.Stream;
 
- //Completar todos los response
+//Completar todos los response
 @Service
 @Transactional
 public class TaskService {
@@ -47,40 +49,14 @@ public class TaskService {
 	@Autowired
 	private CommentDao commentDao;
 
-	
-	public TaskResponseDto getTaskById(Long id) throws EntityNotFoundException {
+	public TaskResponseDto getTaskById(Long id) throws EntityNotFoundException, BadRequestException {
+		if (id <= 0) {
+			throw new BadRequestException();
+		}
 		Task task = taskDao.load(id);
 		taskDao.insert(task);
 
 		TaskResponseDto response = new TaskResponseDto();
-//
-//		response.setId(task.getId());
-//		response.setLast_update(task.getLast_update());
-//		response.setTask_name(task.getTask_name());
-//		response.setDescription(task.getDescription());
-//		response.setPriority(task.getPriority());
-//		response.setUserid(task.getUser().getId());
-//		response.setProject_name(task.getProject().getName());
-//		response.setProjectid(task.getProject().getId());
-//		response.setState_name(task.getState().getName());
-//		response.setStateid(task.getState().getId());
-//		
-//		List<Comment> comments = commentDao.getAllByTaskId(task.getId());
-//		
-//		List<CommentResponseDto> comment_response = new ArrayList<CommentResponseDto>();
-//		
-//		CommentResponseDto crdto = new CommentResponseDto();
-//
-//		for (Comment comment : comments) {
-//			System.out.println(comment.getId());
-//			crdto.setId(comment.getId());
-//			crdto.setDescription(comment.getDescription());
-//			crdto.setTaskid(comment.getTask().getId());
-//			crdto.setUserid(comment.getUser().getId());
-//			System.out.println(crdto.getId());
-//			comment_response.add(crdto);
-//		}
-//		response.setComment(comment_response);
 
 		return taskResponseGenerator(response, task);
 	}
@@ -91,13 +67,13 @@ public class TaskService {
 		List<TaskResponseDto> response = new ArrayList<TaskResponseDto>();
 
 		for (Task task : tasks) {
-			response.add((TaskResponseDto) new ModelDtoConverter().convertToDto(task, new TaskResponseDto()));
+			response.add(taskResponseGenerator(new TaskResponseDto(), task));
 		}
 
 		return response;
 	}
 
-	public TaskResponseDto insertTask(TaskRequestDto request) throws EntityNotFoundException {
+	public TaskResponseDto insertTask(TaskRequestDto request) throws EntityNotFoundException, BadRequestException {
 
 		Task task = new Task();
 
@@ -105,113 +81,107 @@ public class TaskService {
 		task.setLast_update(Calendar.getInstance().getTime());
 		task.setTask_name(request.getTask_name());
 		task.setDescription(request.getDescription());
-		task.setUser(userDao.load(request.getUserid()));
 		task.setProject(projectDao.load(request.getProjectid()));
-		task.setState(stateDao.load(request.getStateid()));
 		task.setPriority(request.getPriority());
+
+		if (request.getStateid() != null)
+			task.setState(stateDao.load(request.getStateid()));
+		else {
+			if (request.getUserid() != null)
+				task.setState(stateDao.load((long) 2));
+			else {
+				task.setState(stateDao.load((long) 1));
+			}
+		}
+		if (request.getUserid() != null)
+			task.setUser(userDao.load(request.getUserid()));
 
 		taskDao.insert(task);
 
-		TaskResponseDto response = new TaskResponseDto();
+		Comment comment = new Comment();
+		comment.setDescription("Se creó una nueva tarea / fecha: " + Calendar.getInstance().getTime());
+		comment.setTask(task);
+		commentDao.insert(comment);
 
-//		response.setId(task.getId());
-//		response.setLast_update(task.getLast_update());
-//		response.setTask_name(task.getTask_name());
-//		response.setDescription(task.getDescription());
-//		response.setPriority(task.getPriority());
-//		response.setUserid(task.getUser().getId());
-//		response.setProject_name(task.getProject().getName());
-//		response.setProjectid(task.getProject().getId());
-//		response.setState_name(task.getState().getName());
-//		response.setStateid(task.getState().getId());
-//		
-//		List<Comment> comments = commentDao.getAllByTaskId(task.getId());
-//		
-//		List<CommentResponseDto> comment_response = new ArrayList<CommentResponseDto>();
-//
-//		for (Comment comment : comments) {
-//			comment_response.add((CommentResponseDto) new ModelDtoConverter().convertToDto(comment, new CommentResponseDto()));
-//		}
-//		response.setComment(comment_response);
+		TaskResponseDto response = new TaskResponseDto();
 
 		return taskResponseGenerator(response, task);
+
 	}
 
-	public TaskResponseDto changeState(Long id, Long request) throws EntityNotFoundException {
+	public TaskResponseDto changeState(Long id, Long request) throws EntityNotFoundException, BadRequestException {
 		Task task = taskDao.load(id);
-
+		Comment comment = new Comment();
+		comment.setDescription("Se cambió el estado de la tarea de " + task.getState().getId() + " a " + request
+				+ " / fecha " + Calendar.getInstance().getTime());
 		task.setState(stateDao.load(request));
+		task.setLast_update(Calendar.getInstance().getTime());
 		taskDao.update(task);
+		comment.setTask(task);
+		commentDao.insert(comment);
 
 		Task task_after_update = taskDao.load(id);
 		TaskResponseDto response = new TaskResponseDto();
 
-//		response.setId(task_after_update.getId());
-//		response.setLast_update(task_after_update.getLast_update());
-//		response.setTask_name(task_after_update.getTask_name());
-//		response.setDescription(task_after_update.getDescription());
-//		response.setPriority(task_after_update.getPriority());
-//		response.setUserid(task_after_update.getUser().getId());
-//		response.setProject_name(task_after_update.getProject().getName());
-//		response.setProjectid(task_after_update.getProject().getId());
-//		response.setState_name(task_after_update.getState().getName());
-//		response.setStateid(task_after_update.getState().getId());
 		return taskResponseGenerator(response, task_after_update);
 	}
-	
-	public TaskResponseDto changeUser(Long id, Long request) throws EntityNotFoundException, ForbiddenException {
+
+	public TaskResponseDto changeUser(Long id, Long request)
+			throws EntityNotFoundException, ForbiddenException, BadRequestException {
 		Task task = taskDao.load(id);
+		Comment comment = new Comment();
+		comment.setDescription("Se cambió el usuario asignado de " + task.getUser().getId() + " a " + request
+				+ " /fecha: " + Calendar.getInstance().getTime());
 		Project project = task.getProject();
-		Set<User> project_users= project.getUser();
+		Set<User> project_users = project.getUser();
 		User user = userDao.load(request);
-		if(!project_users.contains(user))
+		if (!project_users.contains(user))
 			throw new ForbiddenException();
-		
+
 		task.setUser(user);
+		task.setState(stateDao.load((long) 2));
+		task.setLast_update(Calendar.getInstance().getTime());
 		taskDao.update(task);
+		
+		comment.setTask(task);
+		commentDao.insert(comment);
 		Task task_after_update = taskDao.load(id);
 		TaskResponseDto response = new TaskResponseDto();
-		
-//		response.setId(task_after_update.getId());
-//		response.setLast_update(task_after_update.getLast_update());
-//		response.setTask_name(task_after_update.getTask_name());
-//		response.setDescription(task_after_update.getDescription());
-//		response.setPriority(task_after_update.getPriority());
-//		response.setUserid(task_after_update.getUser().getId());
-//		response.setProject_name(task_after_update.getProject().getName());
-//		response.setProjectid(task_after_update.getProject().getId());
-//		response.setState_name(task_after_update.getState().getName());
-//		response.setStateid(task_after_update.getState().getId());
+
 		return taskResponseGenerator(response, task_after_update);
 	}
-	
-	public TaskResponseDto taskResponseGenerator(TaskResponseDto response, Task task)
-	{
+
+	public TaskResponseDto taskResponseGenerator(TaskResponseDto response, Task task) {
 
 		response.setId(task.getId());
 		response.setLast_update(task.getLast_update());
 		response.setTask_name(task.getTask_name());
 		response.setDescription(task.getDescription());
 		response.setPriority(task.getPriority());
-		response.setUserid(task.getUser().getId());
 		response.setProject_name(task.getProject().getName());
 		response.setProjectid(task.getProject().getId());
 		response.setState_name(task.getState().getName());
 		response.setStateid(task.getState().getId());
-		
+//		try
+//		{
+//			response.setUserid(task.getUser().getId());
+//		}
+//		catch(NullPointerException())
+//		{
+//			
+//		}			
+
 		List<Comment> comments = commentDao.getAllByTaskId(task.getId());
-		
+
 		List<CommentResponseDto> comment_response = new ArrayList<CommentResponseDto>();
-		
+
 		CommentResponseDto crdto = new CommentResponseDto();
 
 		for (Comment comment : comments) {
-			System.out.println(comment.getId());
 			crdto.setId(comment.getId());
 			crdto.setDescription(comment.getDescription());
 			crdto.setTaskid(comment.getTask().getId());
-			crdto.setUserid(comment.getUser().getId());
-			System.out.println(crdto.getId());
+			//crdto.setUserid(comment.getUser().getId());
 			comment_response.add(crdto);
 		}
 		response.setComment(comment_response);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.StateDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.StateRequestDto;
@@ -21,7 +22,11 @@ public class StateService {
    @Autowired
 	private StateDao stateDao;
 
-    public StateResponseDto getStateById(Long id) throws EntityNotFoundException {
+    public StateResponseDto getStateById(Long id) throws EntityNotFoundException, BadRequestException {
+		if (id <= 0)
+		{
+			throw new BadRequestException();
+		}
         State state = stateDao.load(id);
                 
         StateResponseDto response = (StateResponseDto) new ModelDtoConverter().convertToDto(state, new StateResponseDto());	

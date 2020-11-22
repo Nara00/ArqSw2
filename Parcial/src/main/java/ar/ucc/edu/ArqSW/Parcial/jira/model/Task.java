@@ -26,6 +26,7 @@ public class Task extends GenericObject {
 	@Column(name = "TASK_NAME")
 	private String task_name;
 	
+	@NotNull
 	@Size(min = 1, max = 250)
 	@Column(name = "DESCRIPTION")
 	private String description;
@@ -37,8 +38,9 @@ public class Task extends GenericObject {
 	@Column(name = "LAST_UPDATE")
 	private Date last_update;
 	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="USER_ID")
+	@JoinColumn(name="USER_ID", nullable = true)
 	private User user;
 	
 	@NotNull
@@ -50,6 +52,7 @@ public class Task extends GenericObject {
 	@JoinColumn(name="STATE_ID")
 	private State state;
 	
+	@NotNull
 	@Enumerated(value = EnumType.ORDINAL)
 	@Column(name = "PRIORITY")
 	private Priority priority;

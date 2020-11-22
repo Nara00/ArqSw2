@@ -6,5 +6,5 @@ INSERT INTO `parcial`.`state` (`NAME`) VALUES ('Nueva');
 INSERT INTO `parcial`.`state` (`NAME`) VALUES ('Asignada');
 INSERT INTO `parcial`.`state` (`NAME`) VALUES ('En proceso');
 INSERT INTO `parcial`.`state` (`NAME`) VALUES ('Cerrada');
-INSERT INTO `parcial`.`task` (`DESCRIPTION`, `PRIORITY`, `TASK_NAME`, `PROJECT_ID`, `STATE_ID`, `USER_ID`, `START_DATE`, `LAST_UPDATE`) VALUES ('Controlar Controllers', '0', 'CC', '1', '1', '1', CURRENT_TIME(), CURRENT_TIME());
+INSERT INTO `parcial`.`task` (`DESCRIPTION`, `PRIORITY`, `TASK_NAME`, `PROJECT_ID`, `STATE_ID`, `USER_ID`, `START_DATE`, `LAST_UPDATE`) VALUES ('Controlar Controllers', '0', 'CC', '1', '2', '1', CURRENT_TIME(), CURRENT_TIME());
 INSERT INTO `parcial`.`comment` (`DESCRIPTION`, `TASK_ID`, `USER_ID`) VALUES ('Casi terminado todo ahre', '1', '1');

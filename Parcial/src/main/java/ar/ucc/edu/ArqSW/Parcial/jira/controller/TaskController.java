@@ -27,45 +27,73 @@ import ar.ucc.edu.ArqSW.Parcial.jira.service.TaskService;
 @RequestMapping("/task")
 
 public class TaskController {
-	
+
 	@Autowired
-    private TaskService taskService;
+	private TaskService taskService;
 
-    @RequestMapping(method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<TaskResponseDto> getAllTask()
-    {
-        return taskService.getAllTask();
-    }
+	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<TaskResponseDto> getAllTask() {
+		return taskService.getAllTask();
+	}
 
-    @RequestMapping(value="/{id}", method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody TaskResponseDto lookupStateById(@PathVariable("id") Long id) throws EntityNotFoundException
-    {
-        return taskService.getTaskById(id);
-    }
-    
-    @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public @ResponseBody TaskResponseDto saveTask(@RequestBody TaskRequestDto request) throws EntityNotFoundException
-    {
-        return taskService.insertTask(request);
-    }
-    
-    @RequestMapping(value="/changeStateFromTask/{id}", method=RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody TaskResponseDto changeState(@PathVariable("id") Long id, @RequestBody Long request) throws EntityNotFoundException
-    {
-        return taskService.changeState(id, request);
-    }
-    
-    @RequestMapping(value="/setUserToTask/{id}", method=RequestMethod.PUT, produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody ResponseEntity<Object> changeUser(@PathVariable("id") Long id, @RequestBody Long request) throws EntityNotFoundException
-    {
-        try {
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> lookupStateById(@PathVariable("id") Long id) {
+		try {
+			TaskResponseDto dto = taskService.getTaskById(id);
+			return new ResponseEntity<Object>(dto, HttpStatus.OK);
+		} catch (EntityNotFoundException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("404", "No se encontró la entidad buscada");
+			return new ResponseEntity<Object>(exDto, HttpStatus.NOT_FOUND);
+		} catch (BadRequestException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "El parámetro id ingresado no es válido");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseStatus(code = HttpStatus.CREATED)
+	public @ResponseBody ResponseEntity<Object> saveTask(@RequestBody TaskRequestDto request) {
+		try {
+			TaskResponseDto dto = taskService.insertTask(request);
+			return new ResponseEntity<Object>(dto, HttpStatus.OK);
+		} catch (BadRequestException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
+		} catch (EntityNotFoundException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("404",
+					"Algunas de las entidades asociadas no se encontraron");
+			return new ResponseEntity<Object>(exDto, HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@RequestMapping(value = "/changeStateFromTask/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> changeState(@PathVariable("id") Long id, @RequestBody Long request) {
+		try {
+			TaskResponseDto dto = taskService.changeState(id, request);
+			return new ResponseEntity<Object>(dto, HttpStatus.OK);
+		} catch (EntityNotFoundException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("404", "El estado o tarea no se encontraron");
+			return new ResponseEntity<Object>(exDto, HttpStatus.NOT_FOUND);
+		} catch (BadRequestException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@RequestMapping(value = "/setUserToTask/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<Object> changeUser(@PathVariable("id") Long id, @RequestBody Long request) {
+		try {
 			TaskResponseDto dto = taskService.changeUser(id, request);
 			return new ResponseEntity<Object>(dto, HttpStatus.OK);
 		} catch (ForbiddenException e) {
 			GenericExceptionDto exDto = new GenericExceptionDto("403", "Esta persona no pertecene al proyecto");
 			return new ResponseEntity<Object>(exDto, HttpStatus.FORBIDDEN);
-		} 
-    }
-
+		} catch (EntityNotFoundException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("404", "La tarea o el usuario no se encontraron");
+			return new ResponseEntity<Object>(exDto, HttpStatus.NOT_FOUND);
+		} catch (BadRequestException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
+		}
+	}
 }

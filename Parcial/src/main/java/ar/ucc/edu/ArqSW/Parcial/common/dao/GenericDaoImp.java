@@ -13,6 +13,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 
 @Repository
@@ -30,8 +31,15 @@ public abstract class GenericDaoImp<E, ID extends Serializable> implements Gener
 		daoType = (Class<? extends E>) pt.getActualTypeArguments()[0];
 	}
 
-	public void insert(E entity) {
-		em.persist(entity);
+	public void insert(E entity) throws BadRequestException {
+		try {
+			System.out.println("Antes de persist");
+			em.persist(entity);
+			System.out.println("Desp de persist");
+		} catch (Exception e) {
+			System.out.println("En el Catch :)");
+			throw new BadRequestException();
+		}
 	}
 
 	public void saveOrUpdate(E entity) {

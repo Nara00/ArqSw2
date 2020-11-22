@@ -52,14 +52,21 @@ public class UserService {
 		return response;
 	}
 	
-	public UserResponseDto insertUser(UserRequestDto request) {
-		
+	public UserResponseDto insertUser(UserRequestDto request) throws BadRequestException {
+		System.out.println("Antes del model");
 		User user = (User) new ModelDtoConverter().convertToEntity(new User(), request);
-		
+		System.out.println("Desp del model");
+		try {
 		userDao.insert(user);
-		
+		System.out.println("Al final del try del service");
+		}
+		catch(BadRequestException e){
+			System.out.println("En el catch del service");
+			throw new BadRequestException();
+		}
+		System.out.println("Desp del insert");
 		UserResponseDto response = (UserResponseDto) new ModelDtoConverter().convertToDto(user, new UserResponseDto());	
 		
 		return response;
+		}
 	}
-}

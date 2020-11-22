@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
 import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.ProjectDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.UserDao;
@@ -26,7 +27,11 @@ public class ProjectService {
 	@Autowired
 	private UserDao userDao;
 
-    public ProjectResponseDto getProjectById(Long id) throws EntityNotFoundException {
+    public ProjectResponseDto getProjectById(Long id) throws EntityNotFoundException, BadRequestException {
+		if (id <= 0)
+		{
+			throw new BadRequestException();
+		}
     	Project project = projectDao.load(id);
                 
     	ProjectResponseDto response = (ProjectResponseDto) new ModelDtoConverter().convertToDto(project, new ProjectResponseDto());	
@@ -57,7 +62,7 @@ public class ProjectService {
 		return response;
 	}
 	
-	public ProjectResponseDto insertProject(ProjectRequestDto request) {
+	public ProjectResponseDto insertProject(ProjectRequestDto request) throws BadRequestException {
 		
 		Project project = (Project) new ModelDtoConverter().convertToEntity(new Project(), request);
 		
@@ -90,7 +95,7 @@ public class ProjectService {
 //		return response;
 //	}
 	
-	public ProjectResponseDto setUser(Long id, Long request) throws EntityNotFoundException
+	public ProjectResponseDto setUser(Long id, Long request) throws EntityNotFoundException, BadRequestException
 	{
 	Project project = projectDao.load(id);
 	project.addUser(userDao.load(request));
