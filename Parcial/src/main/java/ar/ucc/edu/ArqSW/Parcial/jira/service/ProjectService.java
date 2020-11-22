@@ -9,13 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.ProjectDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.UserDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectResponseDto;
-import ar.ucc.edu.ArqSW.Parcial.jira.dto.TaskResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Project;
-import ar.ucc.edu.ArqSW.Parcial.jira.model.Task;
 
 @Service
 @Transactional
@@ -27,13 +26,25 @@ public class ProjectService {
 	@Autowired
 	private UserDao userDao;
 
-    public ProjectResponseDto getProjectById(Long id) {
+    public ProjectResponseDto getProjectById(Long id) throws EntityNotFoundException {
     	Project project = projectDao.load(id);
                 
     	ProjectResponseDto response = (ProjectResponseDto) new ModelDtoConverter().convertToDto(project, new ProjectResponseDto());	
         return response;
     }
 	
+    public List<ProjectResponseDto> getProjectByName(String name) {
+    	List<Project> projects = projectDao.findByName(name);
+		
+		List<ProjectResponseDto> response = new ArrayList<ProjectResponseDto>();
+		 
+		for (Project project : projects) {
+			response.add((ProjectResponseDto) new ModelDtoConverter().convertToDto(project, new ProjectResponseDto()));
+		}
+		
+		return response;
+    }
+    
 	public List<ProjectResponseDto> getAllProject() {
 		List<Project> projects = projectDao.getAll();
 		
@@ -79,7 +90,7 @@ public class ProjectService {
 //		return response;
 //	}
 	
-	public ProjectResponseDto setUser(Long id, Long request)
+	public ProjectResponseDto setUser(Long id, Long request) throws EntityNotFoundException
 	{
 	Project project = projectDao.load(id);
 	project.addUser(userDao.load(request));

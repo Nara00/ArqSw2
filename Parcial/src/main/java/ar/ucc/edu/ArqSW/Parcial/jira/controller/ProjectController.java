@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.ProjectResponseDto;
-import ar.ucc.edu.ArqSW.Parcial.jira.dto.TaskResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.service.ProjectService;
 import ar.ucc.edu.ArqSW.Parcial.jira.service.UserService;
 
@@ -35,8 +35,13 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ProjectResponseDto lookupStateById(@PathVariable("id") Long id) {
+	public @ResponseBody ProjectResponseDto lookupStateById(@PathVariable("id") Long id) throws EntityNotFoundException {
 		return projectService.getProjectById(id);
+	}
+	
+	@RequestMapping(value = "/findByName/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody List<ProjectResponseDto> lookupStateById(@PathVariable("name") String name) {
+		return projectService.getProjectByName(name);
 	}
 
 	@RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,7 +51,7 @@ public class ProjectController {
 	}
 
 	@RequestMapping(value = "/setUserToProject/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ProjectResponseDto setUser(@PathVariable("id") Long id, @RequestBody Long request) {
+	public @ResponseBody ProjectResponseDto setUser(@PathVariable("id") Long id, @RequestBody Long request) throws EntityNotFoundException {
 		System.out.println("estamos aquí");
 		return projectService.setUser(id, request);
 	}

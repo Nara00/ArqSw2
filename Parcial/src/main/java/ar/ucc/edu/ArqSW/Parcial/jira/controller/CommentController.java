@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.CommentRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.CommentResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.service.CommentService;
@@ -30,14 +31,14 @@ public class CommentController {
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody CommentResponseDto lookupStateById(@PathVariable("id") Long id)
+    public @ResponseBody CommentResponseDto lookupStateById(@PathVariable("id") Long id) throws EntityNotFoundException
     {
         return commentService.getCommentById(id);
     }
     
     @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
-    public @ResponseBody CommentResponseDto saveComment(@RequestBody CommentRequestDto request)
+    public @ResponseBody CommentResponseDto saveComment(@RequestBody CommentRequestDto request) throws EntityNotFoundException
     {
         return commentService.insertComment(request);
     }

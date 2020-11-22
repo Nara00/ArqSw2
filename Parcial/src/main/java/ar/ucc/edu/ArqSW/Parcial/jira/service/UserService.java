@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.UserDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.UserRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.UserResponseDto;
@@ -21,8 +23,12 @@ public class UserService {
 	@Autowired
 	private UserDao userDao;
 
-	public UserResponseDto getUserById(Long id){
+	public UserResponseDto getUserById(Long id) throws EntityNotFoundException, BadRequestException {
 		
+		if (id <= 0)
+		{
+			throw new BadRequestException();
+		}
 		User user = userDao.load(id);
 		
 		UserResponseDto response = new UserResponseDto();

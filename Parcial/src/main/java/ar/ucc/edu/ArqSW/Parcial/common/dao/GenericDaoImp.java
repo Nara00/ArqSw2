@@ -13,6 +13,8 @@ import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
+
 @Repository
 public abstract class GenericDaoImp<E, ID extends Serializable> implements GenericDao<E, ID> {
 
@@ -44,8 +46,12 @@ public abstract class GenericDaoImp<E, ID extends Serializable> implements Gener
 		em.remove(entity);
 	}
 
-	public E load(ID key) {
-		return em.find(daoType, key);
+	public E load(ID key)  throws EntityNotFoundException{
+		E entity = em.find(daoType, key);
+		if (entity == null) {
+			throw new EntityNotFoundException();
+		}
+		return entity;
 	}
 
 	@SuppressWarnings("unchecked")

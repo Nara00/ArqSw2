@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.StateRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.StateResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.service.StateService;
@@ -30,16 +31,16 @@ public class StateController {
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody StateResponseDto lookupStateById(@PathVariable("id") Long id)
+    public @ResponseBody StateResponseDto lookupStateById(@PathVariable("id") Long id) throws EntityNotFoundException
     {
         return stateService.getStateById(id);
     }
     
-    @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public @ResponseBody StateResponseDto saveState(@RequestBody StateRequestDto request)
-    {
-        return stateService.insertState(request);
-    }
+//    @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseStatus(code = HttpStatus.CREATED)
+//    public @ResponseBody StateResponseDto saveState(@RequestBody StateRequestDto request)
+//    {
+//        return stateService.insertState(request);
+//    }
 
 }

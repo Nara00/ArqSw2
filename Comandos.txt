@@ -15,4 +15,4 @@ curl --header "Content-Type: application/json" --request POST --data "{\"task_na
 ChangeState:
 curl --header "Content-Type: application/json" --request PUT --data "2" http://localhost:8080/Parcial/task/changeStateFromTask/1
 curl --header "Content-Type: application/json" --request PUT --data "2" http://localhost:8080/Parcial/task/setUserToTask/1
-curl --header "Content-Type: application/json" --request PUT --data "2" http://localhost:8080/Parcial/project/setUserToProject/1
+curl --header "Content-Type: application/json" --request POST --data "2" http://localhost:8080/Parcial/project/setUserToProject/1

@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ar.ucc.edu.ArqSW.Parcial.common.dto.ModelDtoConverter;
-
+import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.CommentDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.TaskDao;
 import ar.ucc.edu.ArqSW.Parcial.jira.dao.UserDao;
@@ -29,7 +29,7 @@ public class CommentService {
 	@Autowired
 	private UserDao userDao;
 
-	public CommentResponseDto getCommentById(Long id) {
+	public CommentResponseDto getCommentById(Long id) throws EntityNotFoundException {
 		Comment comment = commentDao.load(id);
 
 		CommentResponseDto response = (CommentResponseDto) new ModelDtoConverter().convertToDto(comment,
@@ -49,7 +49,7 @@ public class CommentService {
 		return response;
 	}
 
-	public CommentResponseDto insertComment(CommentRequestDto request) {
+	public CommentResponseDto insertComment(CommentRequestDto request) throws EntityNotFoundException {
 
 		Comment comment = new Comment();
 

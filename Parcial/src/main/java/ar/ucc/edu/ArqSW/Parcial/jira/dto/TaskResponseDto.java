@@ -1,6 +1,6 @@
 package ar.ucc.edu.ArqSW.Parcial.jira.dto;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 import ar.ucc.edu.ArqSW.Parcial.common.dto.DtoEntity;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Priority;
@@ -17,7 +17,7 @@ public class TaskResponseDto implements DtoEntity{
 	private Long stateid;
 	private String state_name;
 	private Priority priority;
-	private Set<CommentResponseDto> comment;
+	private List<CommentResponseDto> comment;
 	
 	public String getTask_name() {
 		return task_name;
@@ -79,12 +79,12 @@ public class TaskResponseDto implements DtoEntity{
 	public void setPriority(Priority priority) {
 		this.priority = priority;
 	}
-	public Set<CommentResponseDto> getComment() {
+	public List<CommentResponseDto> getComment() {
 		return comment;
 	}
-	public void setComment(Set<CommentResponseDto> comment) {
+	public void setComment(List<CommentResponseDto> comment) {
 		this.comment = comment;
 	}
-	
+
 	
 }

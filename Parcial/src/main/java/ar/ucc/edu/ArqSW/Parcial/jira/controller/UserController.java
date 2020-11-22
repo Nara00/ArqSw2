@@ -2,6 +2,7 @@ package ar.ucc.edu.ArqSW.Parcial.jira.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import ar.ucc.edu.ArqSW.Parcial.common.dto.GenericExceptionDto;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.BadRequestException;
+import ar.ucc.edu.ArqSW.Parcial.common.exception.EntityNotFoundException;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.UserRequestDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.dto.UserResponseDto;
 import ar.ucc.edu.ArqSW.Parcial.jira.service.UserService;
@@ -32,9 +36,18 @@ public class UserController {
     }
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody UserResponseDto lookupStateById(@PathVariable("id") Long id)
+    public @ResponseBody ResponseEntity<Object> lookupStateById(@PathVariable("id") Long id)
     {
-        return userService.getUserById(id);
+        try {
+			UserResponseDto dto = userService.getUserById(id);
+			return new ResponseEntity<Object>(dto, HttpStatus.OK);
+		} catch (EntityNotFoundException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("404", "No se encontró la entidad buscada");
+			return new ResponseEntity<Object>(exDto, HttpStatus.NOT_FOUND);
+		} catch (BadRequestException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "El id es negativo");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
+		}
     }
     
     @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
