@@ -50,20 +50,31 @@ public class UserController {
 		}
     }
     
+    @RequestMapping(value="usersFromProject/{id}", method=RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
+    public @ResponseBody ResponseEntity<Object> UsersFromProject(@PathVariable("id") Long id)
+    {
+        try {
+        	List<UserResponseDto> dto = userService.getUsersByProject(id);
+			return new ResponseEntity<Object>(dto, HttpStatus.OK);
+		} catch (EntityNotFoundException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("404", "No se encontró la entidad buscada");
+			return new ResponseEntity<Object>(exDto, HttpStatus.NOT_FOUND);
+		} catch (BadRequestException e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "El parámetro id ingresado no es válido");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
+		}
+    }
+    
     @RequestMapping(method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces= MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
     public @ResponseBody ResponseEntity<Object> saveSocio(@RequestBody UserRequestDto request)
     {
         try {
-        	System.out.println("Principio del try del controller");
 			UserResponseDto dto = userService.insertUser(request);
-			System.out.println("Final del try del controller");
 			return new ResponseEntity<Object>(dto, HttpStatus.OK);
 			
 		} catch (BadRequestException e) {
-			System.out.println("Principio del catch del controller");
 			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
-			System.out.println("Final del catch del controller");
 			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
 		}
     } 
