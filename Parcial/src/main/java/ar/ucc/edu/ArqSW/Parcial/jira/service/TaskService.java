@@ -2,6 +2,7 @@ package ar.ucc.edu.ArqSW.Parcial.jira.service;
 
 import java.util.List;
 import java.util.Set;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -75,24 +76,24 @@ public class TaskService {
 
 		Task task = new Task();
 
-		task.setStartdate(Calendar.getInstance().getTime());
-		task.setLast_update(Calendar.getInstance().getTime());
-		task.setTask_name(request.getTask_name());
+		task.setStartDate(Calendar.getInstance().getTime());
+		task.setLastUpdate(Calendar.getInstance().getTime());
+		task.setTaskName(request.getTaskName());
 		task.setDescription(request.getDescription());
-		task.setProject(projectDao.load(request.getProjectid()));
+		task.setProject(projectDao.load(request.getProjectId()));
 		task.setPriority(request.getPriority());
 
-		if (request.getStateid() != null)
-			task.setState(stateDao.load(request.getStateid()));
+		if (request.getStateId() != null)
+			task.setState(stateDao.load(request.getStateId()));
 		else {
-			if (request.getUserid() != null)
+			if (request.getUserId() != null)
 				task.setState(stateDao.load((long) 2));
 			else {
 				task.setState(stateDao.load((long) 1));
 			}
 		}
-		if (request.getUserid() != null)
-			task.setUser(userDao.load(request.getUserid()));
+		if (request.getUserId() != null)
+			task.setUser(userDao.load(request.getUserId()));
 
 		taskDao.insert(task);
 
@@ -117,7 +118,7 @@ public class TaskService {
 		comment.setDescription("Se cambió el estado de la tarea de " + task.getState().getId() + " a " + request
 				+ " / fecha " + Calendar.getInstance().getTime());
 		task.setState(stateDao.load(request));
-		task.setLast_update(Calendar.getInstance().getTime());
+		task.setLastUpdate(Calendar.getInstance().getTime());
 		taskDao.update(task);
 		comment.setTask(task);
 		commentDao.insert(comment);
@@ -144,7 +145,7 @@ public class TaskService {
 
 		task.setUser(user);
 		task.setState(stateDao.load((long) 2));
-		task.setLast_update(Calendar.getInstance().getTime());
+		task.setLastUpdate(Calendar.getInstance().getTime());
 		taskDao.update(task);
 
 		comment.setTask(task);
@@ -155,19 +156,25 @@ public class TaskService {
 		return taskResponseGenerator(response, task_after_update);
 	}
 
-	public TaskResponseDto taskResponseGenerator(TaskResponseDto response, Task task) {
+	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
+		
+	private TaskResponseDto taskResponseGenerator(TaskResponseDto response, Task task) {
 
 		response.setId(task.getId());
-		response.setLast_update(task.getLast_update());
-		response.setTask_name(task.getTask_name());
+		response.setLastUpdate(sdf.format(task.getLastUpdate()));
+		response.setTaskName(task.getTaskName());
 		response.setDescription(task.getDescription());
 		response.setPriority(task.getPriority());
-		response.setProject_name(task.getProject().getName());
-		response.setProjectid(task.getProject().getId());
-		response.setState_name(task.getState().getName());
-		response.setStateid(task.getState().getId());
+		response.setProjectName(task.getProject().getName());
+		response.setProjectId(task.getProject().getId());
+		response.setStateName(task.getState().getName());
+		response.setStateId(task.getState().getId());
 		if (task.getUser() != null)
-			response.setUserid(task.getUser().getId());
+		{
+			response.setUserId(task.getUser().getId());
+			response.setUserName(task.getUser().getName());
+			response.setUserLastname(task.getUser().getLastname());
+		}
 
 		List<Comment> comments = commentDao.getAllByTaskId(task.getId());
 
@@ -178,9 +185,9 @@ public class TaskService {
 		for (Comment comment : comments) {
 			crdto.setId(comment.getId());
 			crdto.setDescription(comment.getDescription());
-			crdto.setTaskid(comment.getTask().getId());
+			crdto.setTaskId(comment.getTask().getId());
 			if (comment.getUser() != null)
-				crdto.setUserid(comment.getUser().getId());
+				crdto.setUserId(comment.getUser().getId());
 			comment_response.add(crdto);
 		}
 		response.setComment(comment_response);

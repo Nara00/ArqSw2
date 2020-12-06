@@ -5,6 +5,7 @@ import ar.ucc.edu.ArqSW.Parcial.common.dto.DtoEntity;
 public class ProjectRequestDto implements DtoEntity{
 
 	private String name;
+	
 	private String description;
 
 	public String getName() {

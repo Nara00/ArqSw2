@@ -47,6 +47,9 @@ public class TaskController {
 		} catch (BadRequestException e) {
 			GenericExceptionDto exDto = new GenericExceptionDto("400", "El parámetro id ingresado no es válido");
 			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
+		}catch (Exception e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -63,6 +66,9 @@ public class TaskController {
 			GenericExceptionDto exDto = new GenericExceptionDto("404",
 					"Algunas de las entidades asociadas no se encontraron");
 			return new ResponseEntity<Object>(exDto, HttpStatus.NOT_FOUND);
+		}catch (Exception e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -81,6 +87,9 @@ public class TaskController {
 		catch (InvalidTransitionException e) {
 			GenericExceptionDto exDto = new GenericExceptionDto("405", "La transicion es invalida");
 			return new ResponseEntity<Object>(exDto, HttpStatus.METHOD_NOT_ALLOWED);
+		}catch (Exception e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
 		}
 	}
 
@@ -101,6 +110,9 @@ public class TaskController {
 		}catch (InvalidTransitionException e) {
 			GenericExceptionDto exDto = new GenericExceptionDto("405", "Esta tarea se encuentra cerrada");
 			return new ResponseEntity<Object>(exDto, HttpStatus.METHOD_NOT_ALLOWED);
+		}catch (Exception e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
 		}
 	}
 }

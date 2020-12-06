@@ -24,7 +24,7 @@ public class Task extends GenericObject {
 	@NotNull
 	@Size(min = 1, max = 250)
 	@Column(name = "TASK_NAME")
-	private String task_name;
+	private String taskName;
 	
 	@NotNull
 	@Size(min = 1, max = 250)
@@ -33,10 +33,10 @@ public class Task extends GenericObject {
 	
 	@NotNull
 	@Column(name = "START_DATE")
-	private Date startdate;
+	private Date startDate;
 	
 	@Column(name = "LAST_UPDATE")
-	private Date last_update;
+	private Date lastUpdate;
 	
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -60,12 +60,12 @@ public class Task extends GenericObject {
 	@OneToMany(mappedBy="task", fetch = FetchType.LAZY)
 	private Set<Comment> comment;
 
-	public String getTask_name() {
-		return task_name;
+	public String getTaskName() {
+		return taskName;
 	}
 
-	public void setTask_name(String task_name) {
-		this.task_name = task_name;
+	public void setTaskName(String task_name) {
+		this.taskName = task_name;
 	}
 
 	public String getDescription() {
@@ -76,20 +76,20 @@ public class Task extends GenericObject {
 		this.description = description;
 	}
 
-	public Date getStartdate() {
-		return startdate;
+	public Date getStartDate() {
+		return startDate;
 	}
 
-	public void setStartdate(Date startdate) {
-		this.startdate = startdate;
+	public void setStartDate(Date startdate) {
+		this.startDate = startdate;
 	}
 
-	public Date getLast_update() {
-		return last_update;
+	public Date getLastUpdate() {
+		return lastUpdate;
 	}
 
-	public void setLast_update(Date last_update) {
-		this.last_update = last_update;
+	public void setLastUpdate(Date last_update) {
+		this.lastUpdate = last_update;
 	}
 
 	public User getUser() {

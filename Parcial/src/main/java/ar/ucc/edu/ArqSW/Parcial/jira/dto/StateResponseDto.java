@@ -5,6 +5,7 @@ import ar.ucc.edu.ArqSW.Parcial.common.dto.DtoEntity;
 public class StateResponseDto implements DtoEntity{
 	
 	private Long id;
+	
 	private String name;
 
 	public String getName() {

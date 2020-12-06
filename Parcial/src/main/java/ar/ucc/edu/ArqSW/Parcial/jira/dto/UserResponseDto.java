@@ -4,7 +4,6 @@ import ar.ucc.edu.ArqSW.Parcial.common.dto.DtoEntity;
 
 public class UserResponseDto implements DtoEntity{
 
-   
 	private Long id;
 	
 	private String name;
@@ -22,8 +21,8 @@ public class UserResponseDto implements DtoEntity{
 	public String getLastname() {
 		return lastname;
 	}
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setLastname(String lastName) {
+		this.lastname = lastName;
 	}
 	public String getEmail() {
 		return email;

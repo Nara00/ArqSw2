@@ -58,8 +58,8 @@ public class CommentService {
 		Comment comment = new Comment();
 
 		comment.setDescription(request.getDescription());
-		comment.setTask(taskDao.load(request.getTaskid()));
-		comment.setUser(userDao.load(request.getUserid()));
+		comment.setTask(taskDao.load(request.getTaskId()));
+		comment.setUser(userDao.load(request.getUserId()));
 	
 		commentDao.insert(comment);
 
@@ -69,13 +69,13 @@ public class CommentService {
 
 	}
 	
-	public CommentResponseDto commentResponseGenerator(CommentResponseDto response, Comment comment)
+	private CommentResponseDto commentResponseGenerator(CommentResponseDto response, Comment comment)
 	{
 		response.setId(comment.getId());
 		response.setDescription(comment.getDescription());
-		response.setTaskid(comment.getTask().getId());
+		response.setTaskId(comment.getTask().getId());
 		if (comment.getUser() != null)
-			response.setUserid(comment.getUser().getId());
+			response.setUserId(comment.getUser().getId());
 
 		return response;
 	}

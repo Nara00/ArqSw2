@@ -5,53 +5,66 @@ import ar.ucc.edu.ArqSW.Parcial.jira.model.Priority;
 
 public class TaskRequestDto implements DtoEntity{
 
-	private String task_name;
+	private String taskName;
 	
 	private String description;
 	
-	private Long userid;
+	private Long userId;
 	
-	private Long projectid;
+	private Long projectId;
 	
-	private Long stateid;
+	private Long stateId;
 	
 	private Priority priority;
-	
-	public String getTask_name() {
-		return task_name;
+
+	public String getTaskName() {
+		return taskName;
 	}
-	public void setTask_name(String task_name) {
-		this.task_name = task_name;
+
+	public void setTaskName(String taskName) {
+		this.taskName = taskName;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Long getStateid() {
-		return stateid;
+
+	public Long getUserId() {
+		return userId;
 	}
-	public void setStateid(Long stateid) {
-		this.stateid = stateid;
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
-	public Long getUserid() {
-		return userid;
+
+	public Long getProjectId() {
+		return projectId;
 	}
-	public void setUserid(Long userid) {
-		this.userid = userid;
+
+	public void setProjectId(Long projectId) {
+		this.projectId = projectId;
 	}
-	public Long getProjectid() {
-		return projectid;
+
+	public Long getStateId() {
+		return stateId;
 	}
-	public void setProjectid(Long projectid) {
-		this.projectid = projectid;
+
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
+
 	public Priority getPriority() {
 		return priority;
 	}
+
 	public void setPriority(Priority priority) {
 		this.priority = priority;
 	}
+	
+	
 			
 }

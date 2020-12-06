@@ -9,9 +9,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
 
 import ar.ucc.edu.ArqSW.Parcial.common.dao.GenericDaoImp;
-import ar.ucc.edu.ArqSW.Parcial.jira.model.Comment;
 import ar.ucc.edu.ArqSW.Parcial.jira.model.Project;
-import ar.ucc.edu.ArqSW.Parcial.jira.model.User;
 
 @Repository
 public class ProjectDaoImp extends GenericDaoImp<Project, Long> implements ProjectDao{

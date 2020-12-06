@@ -5,25 +5,34 @@ import ar.ucc.edu.ArqSW.Parcial.common.dto.DtoEntity;
 public class CommentRequestDto implements DtoEntity{
   
 	private String description;
-	private Long taskid;
-	private Long userid;
 	
+	private Long taskId;
+	
+	private Long userId;
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Long getTaskid() {
-		return taskid;
+
+	public Long getTaskId() {
+		return taskId;
 	}
-	public void setTaskid(Long taskid) {
-		this.taskid = taskid;
+
+	public void setTaskId(Long taskId) {
+		this.taskId = taskId;
 	}
-	public Long getUserid() {
-		return userid;
+
+	public Long getUserId() {
+		return userId;
 	}
-	public void setUserid(Long userid) {
-		this.userid = userid;
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
+	
+	
 }

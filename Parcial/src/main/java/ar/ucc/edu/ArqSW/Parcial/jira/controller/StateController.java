@@ -42,6 +42,9 @@ public class StateController {
 		} catch (BadRequestException e) {
 			GenericExceptionDto exDto = new GenericExceptionDto("400", "El parámetro id ingresado no es válido");
 			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
+		}catch (Exception e) {
+			GenericExceptionDto exDto = new GenericExceptionDto("400", "Error en la solicitud");
+			return new ResponseEntity<Object>(exDto, HttpStatus.BAD_REQUEST);
 		}
     }
     

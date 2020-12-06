@@ -5,10 +5,11 @@ import ar.ucc.edu.ArqSW.Parcial.common.dto.DtoEntity;
 public class ProjectResponseDto implements DtoEntity{
 	
 	private Long id;
-    private String name;
+    
+	private String name;
+	
 	private String description;
-	//private Set<Task> task;
-	//private Set<User> user;
+
 	public String getName() {
 		return name;
 	}
