@@ -66,7 +66,12 @@ public class ProjectService {
 		
 		Project project = (Project) new ModelDtoConverter().convertToEntity(new Project(), request);
 		
-		projectDao.insert(project);
+		try {
+			projectDao.insert(project);
+			}
+			catch(BadRequestException e){
+				throw new BadRequestException();
+			}
 		
 		ProjectResponseDto response = (ProjectResponseDto) new ModelDtoConverter().convertToDto(project, new ProjectResponseDto());	
 		

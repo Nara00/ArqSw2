@@ -5,20 +5,19 @@ Post:
 User:
 curl --header "Content-Type: application/json" --request POST --data "{\"name\":\"Juan Paco\",\"lastname\":\"De La Mar\",\"email\":\"jppdlm@gmail.com\"}" http://localhost:8080/Parcial/user
 Comment:
-curl --header "Content-Type: application/json" --request POST --data "{\"description\":\"Descripcion2\",\"taskid\":\"1\",\"userid\":\"1\"}" http://localhost:8080/Parcial/comment
+curl --header "Content-Type: application/json" --request POST --data "{\"description\":\"Descripcion2\",\"taskId\":\"1\",\"userId\":\"1\"}" http://localhost:8080/Parcial/comment
 Project:
 curl --header "Content-Type: application/json" --request POST --data "{\"name\":\"Projecto2\",\"description\":\"Descripcion2\"}" http://localhost:8080/Parcial/project
 State:
 curl --header "Content-Type: application/json" --request POST --data "{\"name\":\"Estado 2\"}" http://localhost:8080/Parcial/state
 Task:
-curl --header "Content-Type: application/json" --request POST --data "{\"task_name\":\"Nombre Tarea 2\",\"description\":\"Descripcion tarea\",\"userid\":\"1\",\"projectid\":\"1\",\"stateid\":\"1\",\"priority\":\"1\"}" http://localhost:8080/Parcial/task
+curl --header "Content-Type: application/json" --request POST --data "{\"taskName\":\"Nombre Tarea 2\",\"description\":\"Descripcion tarea\",\"userId\":\"1\",\"projectId\":\"1\",\"stateId\":\"2\",\"priority\":\"1\"}" http://localhost:8080/Parcial/task
 ChangeState:
 curl --header "Content-Type: application/json" --request PUT --data "2" http://localhost:8080/Parcial/task/changeStateFromTask/1
 curl --header "Content-Type: application/json" --request PUT --data "2" http://localhost:8080/Parcial/task/setUserToTask/1
 curl --header "Content-Type: application/json" --request POST --data "2" http://localhost:8080/Parcial/project/setUserToProject/1
 
-curl --header "Content-Type: application/json" --request GET http://localhost:8080/Parcial/task/1
-curl --header "Content-Type: application/json" --request POST --data "{\"description\":\"Descripcion2\",\"taskid\":\"2\",\"userid\":\"1\"}" http://localhost:8080/Parcial/comment
 
-curl --header "Content-Type: application/json" --request POST --data "{\"description\":\"Descripcion3\",\"taskid\":\"1\",\"userid\":\"1\"}" http://localhost:8080/Parcial/comment
+curl --header "Content-Type: application/json" --request POST --data "{\"description\":\"Descripcion2\",\"taskId\":\"2\",\"userId\":\"1\"}" http://localhost:8080/Parcial/comment
+
 

@@ -47,6 +47,8 @@ public class TaskService {
 
 	@Autowired
 	private CommentDao commentDao;
+	
+	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
 
 	public TaskResponseDto getTaskById(Long id) throws EntityNotFoundException, BadRequestException {
 		if (id <= 0) {
@@ -95,10 +97,15 @@ public class TaskService {
 		if (request.getUserId() != null)
 			task.setUser(userDao.load(request.getUserId()));
 
-		taskDao.insert(task);
-
+		try {
+			taskDao.insert(task);
+			}
+			catch(BadRequestException e){
+				throw new BadRequestException();
+			}
+		
 		Comment comment = new Comment();
-		comment.setDescription("Se creó una nueva tarea / fecha: " + Calendar.getInstance().getTime());
+		comment.setDescription("Se creó una nueva tarea / fecha: " + sdf.format(Calendar.getInstance().getTime()));
 		comment.setTask(task);
 		commentDao.insert(comment);
 
@@ -116,7 +123,7 @@ public class TaskService {
 		}
 		Comment comment = new Comment();
 		comment.setDescription("Se cambió el estado de la tarea de " + task.getState().getId() + " a " + request
-				+ " / fecha " + Calendar.getInstance().getTime());
+				+ " / fecha " + sdf.format(Calendar.getInstance().getTime()));
 		task.setState(stateDao.load(request));
 		task.setLastUpdate(Calendar.getInstance().getTime());
 		taskDao.update(task);
@@ -136,7 +143,7 @@ public class TaskService {
 			throw new InvalidTransitionException();
 		Comment comment = new Comment();
 		comment.setDescription("Se cambió el usuario asignado de " + task.getUser().getId() + " a " + request
-				+ " /fecha: " + Calendar.getInstance().getTime());
+				+ " /fecha: " + sdf.format(Calendar.getInstance().getTime()));
 		Project project = task.getProject();
 		Set<User> project_users = project.getUser();
 		User user = userDao.load(request);
@@ -156,8 +163,7 @@ public class TaskService {
 		return taskResponseGenerator(response, task_after_update);
 	}
 
-	public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
-		
+	
 	private TaskResponseDto taskResponseGenerator(TaskResponseDto response, Task task) {
 
 		response.setId(task.getId());
